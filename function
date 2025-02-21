@@ -1,21 +1,15 @@
-let
-    ReplaceInColumn = (inputTable as table, columnName as text, replacementTable as table) as table =>
-        let
-            // Преобразуем таблицу замен в список пар
-            replacements = Table.ToRows(replacementTable),
-
-            // Функция для замены значений в одной ячейке
-            ReplaceValue = (value as any) as any =>
-                List.Accumulate(
-                    replacements,
-                    value,
-                    (state, current) =>
-                        if state = current{0} then current{1} else state
-                ),
-            
-            // Применяем замену только к указанному столбцу
-            result = Table.TransformColumns(inputTable, {{columnName, each ReplaceValue(_), type text}})
-        in
-            result
-in
-    ReplaceInColumn
+(inputTable as table, columnName as text, replacementTable as table) as table =>
+        Table.TransformColumns(
+            inputTable, 
+            {
+                {columnName, 
+                    each List.Accumulate(
+                        Table.ToRows(replacementTable),
+                        _,
+                        (state, current) =>
+                            if state = current{1} then current{2} else state
+                    ), 
+                    type text
+                }
+            }
+        )
