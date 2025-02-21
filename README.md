@@ -1,10 +1,13 @@
 Функция ReplaceInColumn
+
 Описание
-
 Выполняет замену значений в указанном столбце таблицы на основе таблицы соответствий.
-Синтаксис
 
+Синтаксис
 ReplaceInColumn(inputTable as table, columnName as text, replacementTable as table) as table
+
+Пример
+= replaceValuesInColumn(#"Предыдущий шаг","Столбец меняю",спрЗаменаКД)
 
 Параметры
     inputTable: Исходная таблица, в которой требуется произвести замену значений
